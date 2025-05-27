@@ -1,4 +1,4 @@
-// Import required packages
+// Import packages
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -8,17 +8,17 @@ const NodeCache = require('node-cache');
 const axios = require('axios');
 const dotenv = require('dotenv');
 
-// Load environment variables
+
 dotenv.config();
 
-// Initialize Express app
+// Initialize Express
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize cache with 5 minute standard TTL
+// Initialize cache with 5 minute
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
 
-// Base URL for the stock exchange API
+// stock exchange API
 const STOCK_API_BASE_URL = process.env.STOCK_API_BASE_URL || 'http://20.244.56.144/evaluation-service';
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const TOKEN_TYPE = process.env.TOKEN_TYPE || 'Bearer';
@@ -106,32 +106,27 @@ const calculateCorrelation = (pricesA, pricesB) => {
   // Calculate Pearson correlation coefficient
   const correlation = covariance / (xStdDev * yStdDev);
   
-  // Round to 4 decimal places
+  // Round to 4 decimal
   return parseFloat(correlation.toFixed(4));
 };
 
 // API Routes
-
-// Get all available stocks
 app.get('/api/stocks', async (req, res, next) => {
   try {
     const cacheKey = 'all_stocks';
     
-    // Check cache 
+    
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json(cachedData);
     }
     
-    // Fetch from API if not in cache
-    const data = await fetchFromApi(`${STOCK_API_BASE_URL}/stocks`);
     
-    // Format the response
+    const data = await fetchFromApi(`${STOCK_API_BASE_URL}/stocks`);
     const formattedData = {
       stocks: data.stocks || {}
     };
     
-    // Store in cache
     cache.set(cacheKey, formattedData);
     
     res.json(formattedData);
@@ -146,13 +141,13 @@ app.get('/api/stocks/:ticker', async (req, res, next) => {
     const { ticker } = req.params;
     const cacheKey = `stock_${ticker}`;
     
-    // Check cache first
+    // Check cache
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json(cachedData);
     }
     
-    // Fetch from API if not in cache
+
     const data = await fetchFromApi(`${STOCK_API_BASE_URL}/stocks/${ticker}`);
     
     // Format the response
