@@ -6,23 +6,23 @@ const PORT = process.env.PORT || 9876;
 
 const WINDOW_SIZE = 10;
 const API_TIMEOUT = 500;
-const BASE_API_URL = 'http://20.244.56.144/evaluation-service'; // Base URL 
-const REGISTER_API_URL = `${BASE_API_URL}/register`; // New: Registration endpoint
+const BASE_API_URL = 'http://20.244.56.144/evaluation-service'; 
+const REGISTER_API_URL = `${BASE_API_URL}/register`; 
 
 
-// Store for our numbers 
+
 let numberStore = {
   windowState: [],
   lastRequestTime: null
 };
 
-// Store the access token 
+
 let accessToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQ4MzI1NjQxLCJpYXQiOjE3NDgzMjUzNDEsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjE1NjYzNzM2LTM4YWMtNDI3MC04MjgxLTNhNzAyNTliYWQ3YyIsInN1YiI6IjIzMzE1YTA1MDNAY3NlLnNyZWVuaWRoaS5lZHUuaW4ifSwiZW1haWwiOiIyMzMxNWEwNTAzQGNzZS5zcmVlbmlkaGkuZWR1LmluIiwibmFtZSI6InZpamF5IHZhcm1hIiwicm9sbE5vIjoiMjMzMTVhMDUwMyIsImFjY2Vzc0NvZGUiOiJQQ3FBVUsiLCJjbGllbnRJRCI6IjE1NjYzNzM2LTM4YWMtNDI3MC04MjgxLTNhNzAyNTliYWQ3YyIsImNsaWVudFNlY3JldCI6IkFZQnp6dFVCVEFSdW1uRnkifQ.G7jf8MdrXBK36zybMgwXd3G5sBR-FZaVe6p9k7Nr3zo";
 
 
 
 
-// API endpoints mapping
+
 const apiEndpoints = {
   'p': `${BASE_API_URL}/primes`,
   'f': `${BASE_API_URL}/fibo`,
@@ -31,7 +31,8 @@ const apiEndpoints = {
 };
 
 
-//  Main API endpoint---
+
+
 app.get('/numbers/:numberid', async (req, res) => {
   const { numberid } = req.params;
 
