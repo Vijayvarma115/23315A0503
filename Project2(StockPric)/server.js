@@ -1,8 +1,3 @@
-/**
- * Stock Price Aggregation Microservice
- * Main server file with token authentication
- */
-
 // Import required packages
 const express = require('express');
 const cors = require('cors');
@@ -29,10 +24,10 @@ const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const TOKEN_TYPE = process.env.TOKEN_TYPE || 'Bearer';
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Parse JSON request bodies
-app.use(morgan('dev')); // Request logging
+app.use(helmet()); 
+app.use(cors()); 
+app.use(express.json()); 
+app.use(morgan('dev')); 
 
 // Rate limiting
 const limiter = rateLimit({
@@ -50,8 +45,6 @@ app.use((err, req, res, next) => {
     message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message
   });
 });
-
-// Helper functions
 const fetchFromApi = async (url) => {
   try {
     const response = await axios.get(url, {
@@ -124,7 +117,7 @@ app.get('/api/stocks', async (req, res, next) => {
   try {
     const cacheKey = 'all_stocks';
     
-    // Check cache first
+    // Check cache 
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json(cachedData);
@@ -170,7 +163,7 @@ app.get('/api/stocks/:ticker', async (req, res, next) => {
     };
     
     // Store in cache (shorter TTL for current price)
-    cache.set(cacheKey, formattedData, 60); // 60 seconds TTL
+    cache.set(cacheKey, formattedData, 60);
     
     res.json(formattedData);
   } catch (error) {
@@ -182,11 +175,11 @@ app.get('/api/stocks/:ticker', async (req, res, next) => {
 app.get('/api/stocks/:ticker/history', async (req, res, next) => {
   try {
     const { ticker } = req.params;
-    const minutes = parseInt(req.query.minutes) || 50; // Default to 50 minutes if not specified
+    const minutes = parseInt(req.query.minutes) || 50;//default 50
     
     const cacheKey = `history_${ticker}_${minutes}`;
     
-    // Check cache first
+    // Check cache 
     const cachedData = cache.get(cacheKey);
     if (cachedData) {
       return res.json(cachedData);
@@ -215,7 +208,7 @@ app.get('/api/stocks/:ticker/history', async (req, res, next) => {
 app.get('/api/stocks/:ticker/average', async (req, res, next) => {
   try {
     const { ticker } = req.params;
-    const minutes = parseInt(req.query.minutes) || 50; // Default to 50 minutes if not specified
+    const minutes = parseInt(req.query.minutes) || 50; 
     
     const cacheKey = `average_${ticker}_${minutes}`;
     
@@ -325,10 +318,10 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Start the server
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
   console.log(`Authentication: ${ACCESS_TOKEN ? 'Configured' : 'Missing'}`);
 });
 
-module.exports = app; // Export for testing
+module.exports = app;
